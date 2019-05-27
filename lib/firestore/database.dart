@@ -24,6 +24,9 @@ class FirebaseFirestoreService implements BaseFirestoreService {
     await _firebaseDb.settings(timestampsInSnapshotsEnabled: true);
   }
 
+  static CollectionReference productsCollection =
+      _firebaseDb.collection('products');
+
   static CollectionReference productsByStateCollection =
       _firebaseDb.collection('products_by_state');
   static CollectionReference storesCollection =
@@ -242,8 +245,8 @@ class FirebaseFirestoreService implements BaseFirestoreService {
         inventory.setUpdated(new DateTime.now());
         batch.setData(dr, inventory.toMap(), merge: true);
       } else if (inventory.tempInventoryStock > 0 && inventory.id != null) {
-        Purchase p =
-            new Purchase(id, inventory.tempInventoryStock, 0, new DateTime.now());
+        Purchase p = new Purchase(
+            id, inventory.tempInventoryStock, 0, new DateTime.now());
 
         DocumentReference dr = _firebaseDb
             .collection("store_inventory")
@@ -337,6 +340,15 @@ class FirebaseFirestoreService implements BaseFirestoreService {
     }).catchError((onError) {
       print('checkoutInventory catchError(): ${onError == 'ERROR'}');
     }).whenComplete(() {});
+  }
+
+  Future<dynamic> addProduct(
+      String state, String gameName, String gameNumber, num price) async {
+     String docId = productsCollection
+          .document("state")
+          .collection(state)
+          .document()
+          .documentID;
   }
 }
 /*

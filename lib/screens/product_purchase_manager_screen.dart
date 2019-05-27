@@ -78,7 +78,7 @@ class ProductPurchaseManagerScreen extends StatelessWidget with AppUtilsMixin {
                 color: Colors.white,
               ),
               onPressed: () {
-               // Navigator.of(context).pushNamed(ROUTE_ADD_STORE);
+                Navigator.of(context).pushNamed(ROUTE_ADD_PRODUCT);
               },
             )
           ],

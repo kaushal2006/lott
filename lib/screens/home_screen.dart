@@ -19,6 +19,7 @@ import 'package:lott/screens/store_list_inventory_screen.dart';
 import 'package:lott/screens/store_avatars_screen.dart';
 import 'package:lott/screens/edit_store_screen.dart';
 import 'package:lott/screens/store_list_reports_screen.dart';
+import 'package:lott/screens/add_product_screen.dart';
 
 enum AppDataLoaderStatus { NOT_DETERMINED, COMPLETED, FAILED, USER_NOT_ACTIVE }
 
@@ -242,6 +243,10 @@ class _HomeScreenState extends State<HomeScreen>
       case ROUTE_PRODUCT_PURCHASE_MANAGER:
         return buildCustomRoute(
             ProductPurchaseManagerScreen(bottomTab: bottomTab), settings);
+      case ROUTE_ADD_PRODUCT:
+        return buildCustomRoute(
+            AddProductPage(bottomTab: bottomTab), settings);
+            
     }
     return buildCustomRoute(
         ListStoreInventoryPage(bottomTab: bottomTab), settings);

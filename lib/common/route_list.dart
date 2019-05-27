@@ -15,6 +15,7 @@ const String ROUTE_PRODUCT_PURCHASE_MANAGER = '/product_purchase_manager';
 const String ROUTE_PRODUCT_SALES_MANAGER = '/product_sales_manager';
 const String ROUTE_LIST_PRODUCT = '/list_products';
 const String ROUTE_PRODUCT_SALES = '/product_sales';
+const String ROUTE_ADD_PRODUCT = '/add_product';
 
 const String ROUTE_LIST_STORE = '/list_store';
 const String ROUTE_ADD_STORE = '/add_store';

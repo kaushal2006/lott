@@ -83,6 +83,7 @@ class AppData {
       "listStore": "Stores",
       "settings": "Settings",
       "help": "Help & Feedback",
+      "addProduct": "New Lottery",
       /*
       "/list_store_active": "Active Stores",
       "/list_store_inactive": "Inactive Stores",

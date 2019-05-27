@@ -27,14 +27,13 @@ class AppUtilsMixin {
   final colorAccountsTab = Color.fromRGBO(87, 122, 127, 1.0);
   final colorSettingsTab = Colors.grey[600];
 
-final List<String> productInventoryFilters = [
+  final List<String> productInventoryFilters = [
     'All',
     'Low Stock',
     'No Stock',
-    ];
+  ];
 
-
-  final List<String> productFilters = [
+  /*final List<String> productFilters = [
     'All',
     'No Stk',
     'Low Stk',
@@ -48,7 +47,25 @@ final List<String> productInventoryFilters = [
     '25',
     '30'
   ];
-
+*/
+  final List<num> productPrices = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    15,
+    20,
+    21,
+    25,
+    30
+  ];
   final List<String> allStates = <String>[
     "AK - Alaska",
     "AL - Alabama",
@@ -109,6 +126,10 @@ final List<String> productInventoryFilters = [
 
   List<String> getAllStates() {
     return allStates;
+  }
+
+  List<num> getProductPrices() {
+    return productPrices;
   }
 
   String getStateFullName(String stateCode) {
@@ -250,7 +271,7 @@ final List<String> productInventoryFilters = [
     );
   }
 
-Widget buildProductListSubTitleSales(
+  Widget buildProductListSubTitleSales(
       num rollSize,
       num currentStock,
       num currentStockUnits,
@@ -290,6 +311,7 @@ Widget buildProductListSubTitleSales(
       ],
     );
   }
+
   Widget buildProductListSubTitle(num rollSize, num currentStock,
       num currentStockUnits, bool zeroInventory, var fontColor) {
     return Row(children: <Widget>[
@@ -378,7 +400,9 @@ Widget buildProductListSubTitleSales(
                       : 'assets/storeavatars/$avatar.png')),
             ),
           ),
-          Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0), child: Text(name.toString()))
+          Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(name.toString()))
         ]);
   }
 
