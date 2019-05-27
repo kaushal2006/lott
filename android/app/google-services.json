@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "869200538609",
+    "firebase_url": "https://lott-ria.firebaseio.com",
+    "project_id": "lott-ria",
+    "storage_bucket": "lott-ria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869200538609:android:4011dbeaf531b96b",
+        "android_client_info": {
+          "package_name": "com.example.lott"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869200538609-hsklt7r1v1fraho50ev62ocptutmitcr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lott",
+            "certificate_hash": "aa618d94ba66a75e6acbd84d4c332716f616f4e9"
+          }
+        },
+        {
+          "client_id": "869200538609-n79fqn27836t4pa6jggqk3c59q876mi6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxJCr5FpWHmASnGhhYM_elRZhKMvHOj70"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869200538609-n79fqn27836t4pa6jggqk3c59q876mi6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "869200538609-old46bcoqe22pocaojas4mcegq594oal.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lott"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
