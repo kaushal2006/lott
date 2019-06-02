@@ -4,6 +4,7 @@
 // https://grokonez.com/flutter/flutter-firestore-example-firebase-firestore-crud-operations-with-listview
 
 import 'dart:async';
+import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lott/models/product.dart';
@@ -74,6 +75,13 @@ class _ProductSalesManagerState extends State<ProductSalesManager>
   bool _noProducts = false;
   Map<String, Product> _currentInventoryFiltered;
   int _cupertinoSegnmentIndex = 1;
+
+  customSortMap(Map<String, Product> originalMap) {
+    final Map<String, Product> sorted = new SplayTreeMap.from(originalMap,
+        (a, b) => originalMap[a].price.compareTo(originalMap[b].price));
+    //print(sorted);
+    return sorted;
+  }
 
   @override
   void initState() {
@@ -170,7 +178,9 @@ class _ProductSalesManagerState extends State<ProductSalesManager>
         if (!currentInventory.containsKey(id)) currentInventory[id] = p;
       });
       setState(() {
+        currentInventory = customSortMap(currentInventory);
         _currentInventory = currentInventory;
+        //_currentInventoryFiltered = currentInventory; //check the impact
       });
     }
 
@@ -182,6 +192,7 @@ class _ProductSalesManagerState extends State<ProductSalesManager>
         if (!currentInventory.containsKey(id)) currentInventory[id] = p;
       });
       setState(() {
+        currentInventory = customSortMap(currentInventory);
         _currentInventory = currentInventory;
         _cupertinoSegnmentIndex = 0;
         _currentInventoryFiltered = currentInventory;
@@ -306,6 +317,8 @@ class _ProductSalesManagerState extends State<ProductSalesManager>
         trailing: Icon(Icons.keyboard_arrow_right, size: 30.0),
         onTap: () {
           //onTapLoadProductSales(inventory, product);alternative
+          if(null == inventory)
+            return;
           inventory.resetAllTempStock();
           onTapModalBottomSheet(inventory, product);
         });

@@ -52,20 +52,37 @@ class AppUtilsMixin {
     1,
     2,
     3,
-    4,
+    //4,
     5,
-    6,
-    7,
-    8,
-    9,
+    //6,
+    //7,
+    //8,
+    //9,
     10,
-    11,
+    //11,
     15,
     20,
-    21,
+    //21,
     25,
     30
   ];
+
+  final List<num> rollSizes = [
+    5,
+    10,
+    12,
+    15,
+    20,
+    24,
+    25,
+    30,
+    50,
+    60,
+    100,
+    150,
+    300
+  ];
+
   final List<String> allStates = <String>[
     "AK - Alaska",
     "AL - Alabama",
@@ -132,6 +149,10 @@ class AppUtilsMixin {
     return productPrices;
   }
 
+  List<num> getRollSizes() {
+    return rollSizes;
+  }
+
   String getStateFullName(String stateCode) {
     String stateFullName = "";
     if (stateCode != null && stateCode.isNotEmpty) {
@@ -195,6 +216,32 @@ class AppUtilsMixin {
         ],
       ),
     );
+  }
+
+  Widget widgetFormFieldNameWithIcon(dynamic icon, String title, String val) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+          Icon(icon, color: Colors.green, size: 20),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
+          ),
+          Container(
+              child: Row(
+            children: <Widget>[
+              new Text(title, style: TextStyle(color: Colors.grey)),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
+              ),
+              new Text(val,
+                  style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16))
+            ],
+          )),
+        ]));
   }
 
 // PRODUCT - ----------------

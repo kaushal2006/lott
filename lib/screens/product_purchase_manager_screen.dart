@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lott/models/product.dart';
 import 'package:lott/singletons/app_data.dart';
 import 'package:lott/mixins/app_utils_mixin.dart';
@@ -111,6 +113,13 @@ class _ProductPurchaseManagerState extends State<ProductPurchaseManager>
   //String _filterVal = "All";
   int _cupertinoSegnmentIndex = 0;
 
+  customSortMap(Map<String, Product> originalMap) {
+    final Map<String, Product> sorted = new SplayTreeMap.from(originalMap,
+        (a, b) => originalMap[a].price.compareTo(originalMap[b].price));
+    //print(sorted);
+    return sorted;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -189,6 +198,7 @@ class _ProductPurchaseManagerState extends State<ProductPurchaseManager>
         if (!currentInventory.containsKey(id)) currentInventory[id] = p;
       });
       setState(() {
+        currentInventory = customSortMap(currentInventory);
         _currentInventory = currentInventory;
         _currentInventoryFiltered = currentInventory;
       });
@@ -201,6 +211,7 @@ class _ProductPurchaseManagerState extends State<ProductPurchaseManager>
         if (!currentInventory.containsKey(id)) currentInventory[id] = p;
       });
       setState(() {
+        currentInventory = customSortMap(currentInventory);
         _currentInventory = currentInventory;
         _currentInventoryFiltered = currentInventory;
       });
@@ -218,7 +229,61 @@ class _ProductPurchaseManagerState extends State<ProductPurchaseManager>
     0: Text('All'),
     1: Text('Low Stock'),
     2: Text('No Stock'),
+    3: Icon(Icons.search),
   };
+
+  viewProductInfo(Product p) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  leading: Container(
+                    padding: EdgeInsets.only(left: 0),
+                    child: Icon(Icons.confirmation_number, color: Colors.green),
+                  ),
+                  title: Text(
+                    p.gameName,
+                    style: TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold),
+                  )),
+              content: Column(
+                children: <Widget>[
+                  widgetFormFieldNameWithIcon(
+                      Icons.location_on, "state", p.state),
+                  widgetFormFieldNameWithIcon(
+                      Icons.games, "game number", p.gameNumber),
+                  widgetFormFieldNameWithIcon(
+                      Icons.attach_money, "price", p.price.toString()),
+                  widgetFormFieldNameWithIcon(
+                      Icons.view_headline, "roll size", p.rollSize.toString()),
+                  widgetFormFieldNameWithIcon(
+                      Icons.event_available,
+                      "on Sale",
+                      p.onSaleDate != null
+                          ? formatDateShort(p.onSaleDate)
+                          : "not available"),
+                  widgetFormFieldNameWithIcon(
+                      Icons.event_busy,
+                      "end Sale",
+                      p.endSaleDate != null
+                          ? formatDateShort(p.endSaleDate)
+                          : "not available"),
+                ],
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  textColor: Colors.grey,
+                  child: new Text("Cancel"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ]);
+        });
+  }
 
   ListTile makeListTile(Product product) {
     StoreInventory inventory = AppData()
@@ -262,7 +327,9 @@ class _ProductPurchaseManagerState extends State<ProductPurchaseManager>
                       bottomTab: widget.bottomTab, productId: product.id),
                 ],
               ))),
-      onTap: () {},
+      onTap: () {
+        viewProductInfo(product);
+      },
     );
   }
 
@@ -452,23 +519,31 @@ class _ProductPurchaseManagerState extends State<ProductPurchaseManager>
         Container(
             height: 45.0,
             child: Container(
-              //alignment: Alignment.centerLeft,
-              child: SizedBox(
-                width: 300.0,
-                child: CupertinoSegmentedControl<int>(
-                  selectedColor: colorInventoryTab,
-                  borderColor: colorInventoryTab,
-                  children: cupertinoSengmentTabs,
-                  onValueChanged: (int val) {
-                    setState(() {
-                      _cupertinoSegnmentIndex = val;
-                    });
-                    onClickCupertinoSegnment();
-                  },
-                  groupValue: _cupertinoSegnmentIndex,
-                ),
-              ),
-            )),
+                //alignment: Alignment.centerLeft,
+                child: Stack(
+                  alignment: Alignment.centerRight,
+              children: <Widget>[
+                SizedBox(
+                  width: 330.0,
+                  child: CupertinoSegmentedControl<int>(
+                    selectedColor: colorInventoryTab,
+                    borderColor: colorInventoryTab,
+                    children: cupertinoSengmentTabs,
+                    onValueChanged: (int val) {
+                      setState(() {
+                        _cupertinoSegnmentIndex = val;
+                      });
+                      onClickCupertinoSegnment();
+                    },
+                    groupValue: _cupertinoSegnmentIndex,
+                  ),
+                )/*,
+               Container(
+                 alignment: Alignment.centerLeft,
+                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                 child: Icon(Icons.search, color: Colors.white))*/
+              ],
+            ))),
         Expanded(
           child: listActiveInventory(),
         ),

@@ -1,20 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Product {
   String _id;
   String _number;
   String _name;
-  //String desc;
-  //String category;
   num _price;
   String _state;
   bool _activeInd;
   num _rollSize;
+  DateTime _created;
+  DateTime _updated;
+  DateTime _activated;
+  DateTime _deactivated;
+  String _createdBy;
+  String _updatedBy;
+  DateTime _onSaleDate;
+  DateTime _endSaleDate;
+  //String imageUrl;
 
   Product();
-  //var onSaleDate; //= new DateTime.now();
-  //var endSaleDate;// = new DateTime.now();
-  //int units;//roll size
-  //String imageUrl;
-  //Product(this._productId, this._number, this._name, this._price, this._state, this._activeInd);
 
   String get id => this._id;
   String get gameNumber => this._number;
@@ -23,9 +27,34 @@ class Product {
   String get state => this._state;
   bool get active => this._activeInd;
   num get rollSize => this._rollSize;
+  DateTime get created => this._created;
+  DateTime get updated => this._updated;
+  DateTime get activated => this._activated;
+  DateTime get deactivated => this._deactivated;
+  String get createdBy => this._createdBy;
+  String get updatedBy => this._updatedBy;
+  DateTime get onSaleDate => this._onSaleDate;
+  DateTime get endSaleDate => this._endSaleDate;
 
-  Map<String, dynamic> toMap() {
-    var map = new Map<dynamic, dynamic>();
+  void setId(id) => this._id = id;
+  void setGameNumber(number) => this._number = number;
+  void setGameName(name) => this._name = name;
+  void setPrice(price) => this._price = price;
+  void setState(state) => this._state = state;
+  void setActive(activeInd) => this._activeInd = activeInd;
+  void setRollSize(rollSize) => this._rollSize = rollSize;
+
+  void setCreated(created) => this._created = created;
+  void setUpdated(updated) => this._updated = updated;
+  void setActivated(activated) => this._activated = activated;
+  void setDeactivated(deactivated) => this._deactivated = deactivated;
+  void setCreatedBy(createdBy) => this._createdBy = createdBy;
+  void setUpdatedBy(updatedBy) => this._updatedBy = updatedBy;
+  void setOnSaleDate(onSaleDate) => this._onSaleDate = onSaleDate;
+  void setEndSaleDate(endSaleDate) => this._endSaleDate = endSaleDate;
+
+  Map<String, dynamic> toMapAddProduct() {
+    var map = new Map<String, dynamic>();
     if (this._id != null) {
       map['id'] = this._id;
     }
@@ -35,6 +64,15 @@ class Product {
     map['state'] = this._state;
     map['active'] = this._activeInd;
     map['rollSize'] = this._rollSize;
+    map['createdBy'] = this._createdBy;
+
+    if (null != this._created) map['created'] = this._created;
+    if (null != this._updated) map['updated'] = this._updated;
+    if (null != this._activated) map['activated'] = this._activated;
+    //if (null != this._deactivated) map['deactivated'] = this._deactivated;
+    //map['updatedBy'] = this._updatedBy;
+    if (null != this._onSaleDate) map['onSaleDate'] = this._onSaleDate;
+    if (null != this._endSaleDate) map['endSaleDate'] = this._endSaleDate;
 
     return map;
   }
@@ -47,6 +85,17 @@ class Product {
     this._state = map['state'];
     this._activeInd = map['active'];
     this._rollSize = map['rollSize'];
+    Timestamp tempTime = (null != map['created']) ? map['created'] : null;
+    this._created = null != tempTime ? tempTime.toDate() : null;
+
+    tempTime = (null != map['updated']) ? map['updated'] : null;
+    this._updated = null != tempTime ? tempTime.toDate() : null;
+
+    tempTime = (null != map['onSaleDate']) ? map['onSaleDate'] : null;
+    this._onSaleDate = null != tempTime ? tempTime.toDate() : null;
+
+    tempTime = (null != map['endSaleDate']) ? map['endSaleDate'] : null;
+    this._endSaleDate = null != tempTime ? tempTime.toDate() : null;
   }
 
   Product.fromMap1(String id, Map<dynamic, dynamic> map) {
@@ -57,8 +106,20 @@ class Product {
     this._state = map['state'];
     this._activeInd = map['active'];
     this._rollSize = map['rollSize'];
-  }
 
+    Timestamp tempTime = (null != map['created']) ? map['created'] : null;
+    this._created = null != tempTime ? tempTime.toDate() : null;
+
+    tempTime = (null != map['updated']) ? map['updated'] : null;
+    this._updated = null != tempTime ? tempTime.toDate() : null;
+
+    tempTime = (null != map['onSaleDate']) ? map['onSaleDate'] : null;
+    this._onSaleDate = null != tempTime ? tempTime.toDate() : null;
+
+    tempTime = (null != map['endSaleDate']) ? map['endSaleDate'] : null;
+    this._endSaleDate = null != tempTime ? tempTime.toDate() : null;
+  }
+/*
   Product.map(dynamic obj) {
     this._id = obj['id'];
     this._number = obj['gameNumber'];
@@ -67,5 +128,5 @@ class Product {
     this._state = obj['state'];
     this._activeInd = obj['active'];
     this._rollSize = obj['rollSize'];
-  }
+  }*/
 }

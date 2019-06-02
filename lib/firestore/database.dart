@@ -6,6 +6,7 @@ import 'package:lott/singletons/app_data.dart';
 import 'package:lott/models/store_inventory.dart';
 import 'package:lott/models/purchase.dart';
 import 'package:lott/models/sales.dart';
+import 'package:lott/models/product.dart';
 
 //caching
 //https://stackoverflow.com/questions/53459669/so-what-is-the-simplest-approach-for-caching-in-flutter
@@ -27,8 +28,9 @@ class FirebaseFirestoreService implements BaseFirestoreService {
   static CollectionReference productsCollection =
       _firebaseDb.collection('products');
 
-  static CollectionReference productsByStateCollection =
+  /* static CollectionReference productsByStateCollection =
       _firebaseDb.collection('products_by_state');
+      */
   static CollectionReference storesCollection =
       _firebaseDb.collection('stores');
   //static CollectionReference usersCollection = _firebaseDb.collection('users');
@@ -68,8 +70,9 @@ class FirebaseFirestoreService implements BaseFirestoreService {
   }
 
   Stream<QuerySnapshot> getAllActiveProducts(String state) {
-    Stream<QuerySnapshot> snapshots = productsByStateCollection
-        .where("state", isEqualTo: state)
+    Stream<QuerySnapshot> snapshots = productsCollection
+        .document("state")
+        .collection(state)
         .where("active", isEqualTo: true)
         .orderBy("price")
         .orderBy("gameName")
@@ -342,13 +345,37 @@ class FirebaseFirestoreService implements BaseFirestoreService {
     }).whenComplete(() {});
   }
 
-  Future<dynamic> addProduct(
-      String state, String gameName, String gameNumber, num price) async {
-     String docId = productsCollection
+  Future<void> addProduct(Product p) async {
+    _firebaseDb.runTransaction((Transaction tx) async {
+      final Map<String, dynamic> mapData = p.toMapAddProduct();
+      await productsCollection
           .document("state")
-          .collection(state)
+          .collection(p.state)
           .document()
-          .documentID;
+          .setData(mapData, merge: true);
+      return mapData;
+    }).catchError((onError) {
+      print('1. catchError(): ${onError == 'ERROR'}');
+    });
+  }
+
+  Future<bool> addProductWithCaution(Product p) async {
+    //check if product exist
+    final QuerySnapshot result = await productsCollection
+        .document("state")
+        .collection(p.state)
+        .where('gameNumber', isEqualTo: p.gameNumber)
+        .limit(1)
+        .getDocuments();
+    if (null != result) {
+      final List<DocumentSnapshot> documents = result.documents;
+      if (documents.length > 0) return false;
+      addProduct(p);
+      return true;
+    }
+    if (null == result) {
+      return false;
+    }
   }
 }
 /*
